@@ -26,6 +26,6 @@ print("The standard deviation: \n", standard_deviation)
 # print("The shape: ")
 # print(stock.shape)
 # print("The collumns: ")
-# print(stock.columns)git add data_processor.py
+# print(stock.columns)
 # print("IDK: ")
 # print(stock.isna().sum())
