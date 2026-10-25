@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-stock = yf.download(["NXP"], 
+stock = yf.download(["ASML.AS"], 
                     start="2022-01-01",
                     interval= "1d",
                     auto_adjust=True)
@@ -35,12 +35,34 @@ stock["strategy"] = (
     1 + stock["strategy_return"].fillna(0)
 ).cumprod()
 
+#The drawdown of the current value with respect to the highest peak that has occured before
+stock["buy_hold_drawdown"] = (
+    stock["buy_hold"] / stock["buy_hold"].cummax() - 1
+)
 
+stock["strategy_drawdown"] = (
+    stock["strategy"] / stock["strategy"].cummax() - 1
+)
+
+#The increase in value
+buy_hold_return = stock["buy_hold"].iloc[-1] - 1
+strategy_return = stock["strategy"].iloc[-1] - 1
+
+
+print(
+    f"Buy & Hold max drawdown: "
+    f"{stock['buy_hold_drawdown'].min():.2%}"
+)
+
+print(
+    f"Strategy max drawdown: "
+    f"{stock['strategy_drawdown'].min():.2%}"
+)
 
 stock[["buy_hold", "strategy"]].plot(   
     title="ASML: Buy & Hold vs Moving Average Strategy"
 )
 
-plt.ylabel("Growth of €1")
+plt.ylabel("Price (€)")
 plt.grid(True)
 plt.show()
